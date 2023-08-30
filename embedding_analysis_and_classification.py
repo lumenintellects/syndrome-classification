@@ -367,24 +367,6 @@ for label in df['cluster_label'].unique():
     most_common_syndrome = df[df['cluster_label'] == label]['syndrome_id'].mode()[0]
     label_to_syndrome[label] = most_common_syndrome
 
-# Determine number of clusters (assuming it's equal to the number of unique syndrome IDs)
-n_clusters = df['syndrome_id'].nunique()
-
-# Initialize K-means
-kmeans = KMeans(n_clusters=n_clusters)
-
-# Fit the model
-kmeans.fit(X_normalized)
-
-# Assign cluster labels back to the DataFrame
-df['cluster_label'] = kmeans.labels_
-
-# Create a mapping from cluster label to most common syndrome ID in that cluster
-label_to_syndrome = {}
-for label in df['cluster_label'].unique():
-    most_common_syndrome = df[df['cluster_label'] == label]['syndrome_id'].mode()[0]
-    label_to_syndrome[label] = most_common_syndrome
-
 # Calculate distances to centroids for each sample
 distances = kmeans.transform(X_normalized)
 min_distances = np.min(distances, axis=1)
